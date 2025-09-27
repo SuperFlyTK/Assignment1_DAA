@@ -9,11 +9,12 @@ public class Metrics {
         swaps = 0;
     }
 
-    public void incComparisons() {
+    // Методы вызывающие MergeSort
+    public void incrementComparisons() {
         comparisons++;
     }
 
-    public void incSwaps() {
+    public void incrementSwaps() {
         swaps++;
     }
 
