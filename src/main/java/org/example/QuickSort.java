@@ -6,11 +6,14 @@ public class QuickSort {
     private static final Random rand = new Random();
 
     public static void quickSort(int[] arr, Metrics metrics) {
+        if (metrics != null) metrics.reset();
         quickSort(arr, 0, arr.length - 1, metrics);
     }
 
     private static void quickSort(int[] arr, int left, int right, Metrics metrics) {
         while (left < right) {
+            if (metrics != null) metrics.enterRecursion();
+
             int pivotIndex = left + rand.nextInt(right - left + 1);
             int pivot = arr[pivotIndex];
 
@@ -25,13 +28,15 @@ public class QuickSort {
                 quickSort(arr, partitionIndex + 1, right, metrics);
                 right = partitionIndex - 1;
             }
+
+            if (metrics != null) metrics.exitRecursion();
         }
     }
 
     private static int partition(int[] arr, int left, int right, int pivot, Metrics metrics) {
         int i = left;
         for (int j = left; j < right; j++) {
-            metrics.incrementComparisons();
+            if (metrics != null) metrics.incrementComparisons();
             if (arr[j] < pivot) {
                 swap(arr, i, j, metrics);
                 i++;
@@ -46,7 +51,7 @@ public class QuickSort {
             int temp = arr[i];
             arr[i] = arr[j];
             arr[j] = temp;
-            metrics.incrementSwaps();
+            if (metrics != null) metrics.incrementSwaps();
         }
     }
 }
