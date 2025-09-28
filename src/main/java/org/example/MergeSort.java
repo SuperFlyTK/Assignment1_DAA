@@ -15,10 +15,14 @@ public class MergeSort {
 
     private void mergeSort(int[] arr, int left, int right) {
         if (left >= right) return;
+        if (metrics != null) metrics.enterRecursion();
+
         int mid = (left + right) >>> 1;
         mergeSort(arr, left, mid);
         mergeSort(arr, mid + 1, right);
         merge(arr, left, mid, right);
+
+        if (metrics != null) metrics.exitRecursion();
     }
 
     private void merge(int[] arr, int left, int mid, int right) {
