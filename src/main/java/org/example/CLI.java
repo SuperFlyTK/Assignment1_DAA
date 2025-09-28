@@ -7,7 +7,7 @@ import java.util.Random;
 
 public class CLI {
     public static void main(String[] args) {
-        int[] sizes = {100, 500, 1000, 2000, 4000, 8000, 16000, 32000};
+        int[] sizes = {100, 500, 1000, 2000, 4000};
         Metrics metrics = new Metrics();
         Random rand = new Random();
 
@@ -24,7 +24,10 @@ public class CLI {
                 long start = System.nanoTime();
                 ms.sort(copy1);
                 long end = System.nanoTime();
-                writer.write(n + ",MergeSort," + (end - start) + "," + metrics.getComparisons() + "," + metrics.getSwaps() + "," + metrics.getMaxDepth() + "\n");
+                writer.write(n + ",MergeSort," + (end - start) + "," +
+                        metrics.getComparisons() + "," +
+                        metrics.getSwaps() + "," +
+                        metrics.getMaxDepth() + "\n");
 
                 // QuickSort
                 int[] copy2 = Arrays.copyOf(arr, arr.length);
@@ -32,7 +35,35 @@ public class CLI {
                 start = System.nanoTime();
                 QuickSort.quickSort(copy2, metrics);
                 end = System.nanoTime();
-                writer.write(n + ",QuickSort," + (end - start) + "," + metrics.getComparisons() + "," + metrics.getSwaps() + "," + metrics.getMaxDepth() + "\n");
+                writer.write(n + ",QuickSort," + (end - start) + "," +
+                        metrics.getComparisons() + "," +
+                        metrics.getSwaps() + "," +
+                        metrics.getMaxDepth() + "\n");
+
+                // Deterministic Select (ищем медиану)
+                int[] copy3 = Arrays.copyOf(arr, arr.length);
+                metrics.reset();
+                start = System.nanoTime();
+                DeterministicSelect.select(copy3, n / 2, metrics);
+                end = System.nanoTime();
+                writer.write(n + ",DeterministicSelect," + (end - start) + "," +
+                        metrics.getComparisons() + "," +
+                        metrics.getSwaps() + "," +
+                        metrics.getMaxDepth() + "\n");
+
+                // Closest Pair of Points
+                ClosestPair.Point[] points = new ClosestPair.Point[n];
+                for (int i = 0; i < n; i++) {
+                    points[i] = new ClosestPair.Point(rand.nextDouble() * 10000, rand.nextDouble() * 10000);
+                }
+                metrics.reset();
+                start = System.nanoTime();
+                ClosestPair.closestPair(points, metrics);
+                end = System.nanoTime();
+                writer.write(n + ",ClosestPair," + (end - start) + "," +
+                        metrics.getComparisons() + "," +
+                        metrics.getSwaps() + "," +
+                        metrics.getMaxDepth() + "\n");
             }
 
             System.out.println("Results written to results.csv");
