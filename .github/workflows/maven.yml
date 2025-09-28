@@ -24,4 +24,17 @@ steps:
 
 - name: Build with Maven
   run: mvn -B clean verify
+
+- name: Upload test reports
+  uses: actions/upload-artifact@v3
+  with:
+    name: junit-reports
+    path: target/surefire-reports/
+
+- name: Upload metrics
+  if: always()
+  uses: actions/upload-artifact@v3
+  with:
+    name: metrics
+    path: metrics.csv
 ```
